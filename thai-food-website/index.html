@@ -5,105 +5,129 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>แนะนำอาหารไทย</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --thai-red: #b3282f;
-    --thai-red-dark: #8f1f26;
-    --thai-gold: #d9a441;
-    --thai-gold-dark: #b9852a;
-    --thai-green: #3a6b4a;
-    --cream: #fdf6e9;
-    --card-bg: #fffaf0;
-    --text-dark: #3b2a1a;
-    --text-muted: #8a7a63;
-    --border-soft: #ecd9b8;
+    /* Colors */
+    --color-deep-forest: #00473c;
+    --color-lime-glow: #e6ff55;
+    --color-sage-mist: #d8e5d6;
+    --color-warm-sand: #e8dcc6;
+    --color-cream-canvas: #f4f3e7;
+    --color-forest-shadow: #0e150e;
+    --color-warm-gray: #8c8c82;
+    --color-slate-gray: #555555;
+
+    /* Typography (Kanit substitutes for SweetSans/Grenette — geometric + Thai-capable) */
+    --font-display: 'Kanit', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Kanit', ui-sans-serif, system-ui, sans-serif;
+
+    /* Radii */
+    --radius-cards: 24px;
+    --radius-badges: 20px;
+    --radius-images: 20px;
+    --radius-buttons: 9999px;
+
+    --shadow-xl: rgba(14, 21, 14, 0.4) 3px 3px 32px -10px;
+    --page-max-width: 1100px;
   }
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    background: linear-gradient(180deg, #fdf6e9 0%, #f7ead0 100%);
-    color: var(--text-dark);
-    font-family: 'Kanit', 'Noto Sans Thai UI', system-ui, sans-serif;
-    padding-block: 24px 48px;
+    background: var(--color-cream-canvas);
+    color: var(--color-forest-shadow);
+    font-family: var(--font-body);
+    font-weight: 400;
   }
 
   .container {
-    max-width: 880px;
+    max-width: var(--page-max-width);
     margin: 0 auto;
-    padding-inline: 20px;
+    padding-inline: 24px;
   }
 
-  header {
-    text-align: center;
-    margin-bottom: 32px;
-  }
+  .band { padding-block: 56px; }
+  .band-cream { background: var(--color-cream-canvas); }
+  .band-sage { background: var(--color-sage-mist); }
+  .band-sand { background: var(--color-warm-sand); }
+  .band-forest { background: var(--color-deep-forest); color: var(--color-cream-canvas); }
 
-  header h1 {
-    font-size: clamp(1.8rem, 5vw, 2.6rem);
-    margin: 0 0 8px;
-    color: var(--thai-red);
+  .eyebrow {
+    display: block;
+    font-family: var(--font-body);
     font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-deep-forest);
+    margin: 0 0 12px;
   }
 
-  header .subtitle {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 1rem;
+  /* Hero */
+  .hero {
+    background: url('tomyum-goong.jpg') center/cover no-repeat;
+    position: relative;
   }
 
-  section {
-    margin-bottom: 40px;
-  }
-
-  section h2 {
-    font-size: 1.3rem;
-    color: var(--thai-green);
-    margin: 0 0 16px;
-    font-weight: 600;
-  }
-
-  /* Random pick */
-  .random-section {
-    text-align: center;
-    background: var(--card-bg);
-    border: 1px solid var(--border-soft);
-    border-radius: 20px;
-    padding: 28px 20px;
-    box-shadow: 0 4px 14px rgba(179, 40, 47, 0.08);
-  }
-
-  .btn-random {
-    font-family: inherit;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #fff;
-    background: linear-gradient(135deg, var(--thai-red), var(--thai-red-dark));
-    border: none;
-    border-radius: 999px;
-    padding: 14px 32px;
-    cursor: pointer;
-    box-shadow: 0 6px 16px rgba(179, 40, 47, 0.3);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .btn-random:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(179, 40, 47, 0.38); }
-  .btn-random:active { transform: translateY(0); }
-
-  .result-card {
-    margin-top: 24px;
+  .hero .container {
     display: flex;
-    align-items: center;
-    gap: 18px;
-    text-align: left;
-    background: var(--cream);
-    border: 1px solid var(--thai-gold);
-    border-radius: 16px;
-    padding: 18px 20px;
-    animation: pop 0.25s ease;
+    align-items: flex-end;
+    min-height: 420px;
+    padding-block: 32px;
+  }
+
+  .hero-overlay {
+    background: rgba(244, 243, 231, 0.92);
+    border-radius: var(--radius-cards);
+    padding: 32px;
+    max-width: 480px;
+  }
+
+  .hero-overlay h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    color: var(--color-forest-shadow);
+  }
+
+  .hero-overlay .subtitle {
+    font-family: var(--font-body);
+    font-weight: 200;
+    font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+    letter-spacing: -0.01em;
+    color: var(--color-slate-gray);
+    margin: 0 0 24px;
+  }
+
+  /* Buttons */
+  .btn-cta {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.017em;
+    color: var(--color-forest-shadow);
+    background: var(--color-lime-glow);
+    border: none;
+    border-radius: var(--radius-buttons);
+    padding: 16px 32px;
     cursor: pointer;
+    box-shadow: var(--shadow-xl);
+    transition: transform 0.15s ease;
+  }
+
+  .btn-cta:hover { transform: translateY(-2px); }
+  .btn-cta:active { transform: translateY(0); }
+
+  .random-result-wrap {
+    max-width: 320px;
+    margin: 40px auto 0;
+    text-align: left;
+    animation: pop 0.25s ease;
   }
 
   @keyframes pop {
@@ -111,207 +135,247 @@
     to { opacity: 1; transform: scale(1); }
   }
 
-  .result-card .icon { font-size: 2.6rem; line-height: 1; }
-  .result-card .photo { width: 84px; height: 84px; object-fit: cover; border-radius: 14px; flex-shrink: 0; }
-  .result-card .info { flex: 1; min-width: 0; }
-  .result-card .info h3 { margin: 0 0 4px; font-size: 1.25rem; }
-  .result-card .tag { display: inline-block; margin-bottom: 6px; }
-  .result-card .info p { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
-
-  /* Filter bar */
-  .filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 18px;
-  }
-
-  .filter-btn {
-    font-family: inherit;
-    font-size: 0.9rem;
-    padding: 8px 16px;
-    border-radius: 999px;
-    border: 1px solid var(--thai-gold);
-    background: #fff;
-    color: var(--thai-gold-dark);
-    cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-
-  .filter-btn:hover { background: #fbeed3; }
-
-  .filter-btn.active {
-    background: var(--thai-gold);
-    color: #fff;
-    border-color: var(--thai-gold);
+  /* Section heading */
+  section h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    line-height: 1;
+    margin: 0 0 24px;
+    color: var(--color-forest-shadow);
   }
 
   /* Search */
-  .search-bar {
-    margin-bottom: 14px;
-  }
+  .search-bar { margin-bottom: 16px; }
 
   .search-bar input {
     width: 100%;
-    font-family: inherit;
-    font-size: 0.95rem;
-    padding: 10px 18px;
-    border-radius: 999px;
-    border: 1px solid var(--border-soft);
+    font-family: var(--font-body);
+    font-size: 16px;
+    padding: 12px 20px;
+    border-radius: var(--radius-buttons);
+    border: 2px solid var(--color-warm-gray);
     background: #fff;
-    color: var(--text-dark);
+    color: var(--color-forest-shadow);
   }
 
   .search-bar input:focus {
     outline: none;
-    border-color: var(--thai-gold);
+    border-color: var(--color-deep-forest);
   }
 
-  /* Dish grid */
+  /* Filter pills */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .filter-btn {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    padding: 10px 20px;
+    border-radius: var(--radius-buttons);
+    border: 2px solid var(--color-deep-forest);
+    background: transparent;
+    color: var(--color-deep-forest);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .filter-btn:hover { background: rgba(0, 71, 60, 0.08); }
+
+  .filter-btn.active {
+    background: var(--color-deep-forest);
+    color: var(--color-cream-canvas);
+  }
+
+  /* Dish grid & cards — the photo is the card, no chrome */
   .dish-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 32px;
   }
 
-  .dish-card {
+  .dish-card { cursor: pointer; }
+
+  .dish-photo {
     position: relative;
-    background: var(--card-bg);
-    border: 1px solid var(--border-soft);
-    border-radius: 16px;
-    padding: 18px;
-    box-shadow: 0 2px 8px rgba(59, 42, 26, 0.06);
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-images);
+    background: var(--color-sage-mist);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 20px;
   }
 
-  .dish-card .icon { font-size: 2rem; margin-bottom: 8px; }
-
-  .dish-card .photo {
-    display: block;
-    width: calc(100% + 36px);
-    height: 150px;
-    object-fit: cover;
-    margin: -18px -18px 12px;
-    border-radius: 16px 16px 0 0;
-  }
-  .dish-card h3 { margin: 0 0 6px; font-size: 1.05rem; }
-  .dish-card p { margin: 0; color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; }
-
-  .tag {
-    font-size: 0.75rem;
-    color: var(--thai-green);
-    background: #e6efe6;
-    border-radius: 999px;
-    padding: 2px 10px;
-    margin-bottom: 8px;
-  }
+  .dish-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .dish-photo .icon { font-size: 3.4rem; line-height: 1; }
 
   .heart-btn {
     position: absolute;
     top: 12px;
     right: 12px;
-    background: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(244, 243, 231, 0.85);
     border: none;
-    font-size: 1.35rem;
+    font-size: 1.1rem;
     line-height: 1;
+    color: var(--color-warm-gray);
     cursor: pointer;
-    color: #d8c7a8;
-    transition: transform 0.15s ease, color 0.15s ease;
-    padding: 2px;
+    transition: color 0.15s ease, transform 0.15s ease;
+    padding: 0;
   }
 
-  .heart-btn:hover { transform: scale(1.15); }
-  .heart-btn.active { color: var(--thai-red); }
+  .heart-btn:hover { transform: scale(1.12); }
+  .heart-btn.active { color: var(--color-deep-forest); }
 
-  .result-card .heart-btn { position: static; margin-left: auto; align-self: flex-start; }
+  .dish-card .tag {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-deep-forest);
+    margin-bottom: 8px;
+  }
+
+  .dish-card h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0 0 8px;
+    color: var(--color-forest-shadow);
+  }
+
+  .dish-card p {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.3;
+    color: var(--color-forest-shadow);
+    margin: 0 0 16px;
+  }
+
+  .ghost-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--color-forest-shadow);
+  }
+
+  .dish-card:hover .ghost-link { text-decoration: underline; }
 
   /* Favorites section */
-  .fav-section h2 { display: flex; align-items: center; gap: 6px; }
+  .fav-section h2 { display: flex; align-items: center; gap: 8px; }
 
   .empty-state {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    background: var(--card-bg);
-    border: 1px dashed var(--border-soft);
-    border-radius: 16px;
-    padding: 20px;
+    color: var(--color-slate-gray);
+    font-family: var(--font-body);
+    font-size: 16px;
     text-align: center;
+    padding: 32px;
+    border: 2px dashed var(--color-warm-gray);
+    border-radius: var(--radius-cards);
   }
 
-  footer {
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 0.82rem;
-    margin-top: 24px;
-  }
-
-  @media (max-width: 480px) {
-    .result-card { flex-direction: column; text-align: center; }
-    .result-card .heart-btn { margin-left: 0; }
+  /* Footer */
+  footer.band-forest { text-align: center; }
+  footer.band-forest p {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    color: var(--color-cream-canvas);
   }
 
   /* Dish detail overlay (acts as a detail "page") */
-  .dish-card { cursor: pointer; }
-
-  .detail-overlay[hidden] {
-    display: none;
-  }
+  .detail-overlay[hidden] { display: none; }
 
   .detail-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(59, 42, 26, 0.45);
+    background: rgba(14, 21, 14, 0.55);
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding: 24px 16px;
+    padding: 40px 16px;
     overflow-y: auto;
     z-index: 100;
   }
 
   .detail-page {
-    background: var(--card-bg);
-    border-radius: 20px;
+    background: var(--color-cream-canvas);
+    border-radius: var(--radius-cards);
     max-width: 560px;
     width: 100%;
-    padding: 24px;
+    padding: 32px;
     position: relative;
-    box-shadow: 0 12px 36px rgba(59, 42, 26, 0.25);
+    box-shadow: var(--shadow-xl);
     animation: pop 0.2s ease;
   }
 
   .detail-close {
     position: absolute;
-    top: 14px;
-    right: 14px;
-    background: none;
-    border: none;
-    font-size: 1.4rem;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--color-deep-forest);
+    background: transparent;
+    color: var(--color-deep-forest);
+    font-size: 1.1rem;
     line-height: 1;
     cursor: pointer;
-    color: var(--text-muted);
-    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
   }
 
-  .detail-close:hover { color: var(--thai-red); }
+  .detail-close:hover { background: var(--color-deep-forest); color: var(--color-cream-canvas); }
 
-  .detail-page .photo {
-    display: block;
-    width: calc(100% + 48px);
-    height: 220px;
-    object-fit: cover;
-    margin: -24px -24px 16px;
-    border-radius: 20px 20px 0 0;
+  .detail-page .dish-photo { aspect-ratio: 16 / 10; margin-bottom: 24px; }
+  .detail-page .icon { font-size: 4rem; }
+
+  .detail-page h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    line-height: 0.95;
+    margin: 0 0 12px;
   }
 
-  .detail-page .icon { font-size: 3rem; margin-bottom: 8px; }
-  .detail-page h2 { margin: 0 0 6px; font-size: 1.4rem; }
-  .detail-page .desc { color: var(--text-muted); margin: 0 0 18px; line-height: 1.6; }
+  .detail-page .desc {
+    color: var(--color-slate-gray);
+    margin: 0 0 24px;
+    line-height: 1.5;
+    font-size: 16px;
+  }
 
   .detail-page h3 {
-    font-size: 1rem;
-    color: var(--thai-green);
-    margin: 0 0 10px;
-    font-weight: 600;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-deep-forest);
+    margin: 0 0 12px;
   }
 
   .ingredient-list {
@@ -324,27 +388,42 @@
   }
 
   .ingredient-list li {
-    background: #fff;
-    border: 1px solid var(--border-soft);
-    border-radius: 10px;
-    padding: 8px 12px;
-    font-size: 0.9rem;
+    background: var(--color-sage-mist);
+    color: var(--color-deep-forest);
+    border-radius: var(--radius-badges);
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .band { padding-block: 40px; }
+    .hero .container { align-items: stretch; min-height: 360px; }
+    .hero-overlay { max-width: none; }
   }
 </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🍽️ แนะนำอาหารไทย</h1>
-      <p class="subtitle">เลือกไม่ถูกว่าจะกินอะไรดี ให้เราช่วยสุ่มให้!</p>
-    </header>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-overlay">
+        <span class="eyebrow">เลือกไม่ถูกใช่ไหม?</span>
+        <h1>แนะนำอาหารไทย</h1>
+        <p class="subtitle">ให้เราช่วยสุ่มเมนูเด็ดให้คุณวันนี้</p>
+        <button id="randomBtn" class="btn-cta">สุ่มอาหารไทยวันนี้</button>
+      </div>
+    </div>
+  </section>
 
-    <section class="random-section">
-      <button id="randomBtn" class="btn-random">🎲 สุ่มอาหารไทยวันนี้</button>
-      <div id="randomResult" class="result-card" hidden></div>
-    </section>
+  <section class="band band-sage">
+    <div class="container">
+      <div id="randomResult" class="random-result-wrap" hidden></div>
+    </div>
+  </section>
 
-    <section class="menu-section">
+  <section class="band band-cream menu-section">
+    <div class="container">
       <h2>เมนูอาหารไทยทั้งหมด</h2>
       <div class="search-bar">
         <input type="search" id="searchInput" placeholder="ค้นหาเมนู เช่น ผัดไทย, ต้มยำ..." aria-label="ค้นหาเมนู">
@@ -352,16 +431,22 @@
       <div id="filterBar" class="filter-bar"></div>
       <div id="dishGrid" class="dish-grid"></div>
       <p id="searchEmpty" class="empty-state" hidden>ไม่พบเมนูที่ค้นหา ลองคำอื่นดูนะ</p>
-    </section>
+    </div>
+  </section>
 
-    <section id="favSection" class="fav-section" hidden>
+  <section id="favSection" class="band band-sand fav-section" hidden>
+    <div class="container">
       <h2>❤️ รายการโปรดของฉัน</h2>
       <div id="favGrid" class="dish-grid"></div>
       <p id="favEmpty" class="empty-state" hidden>ยังไม่มีเมนูโปรด ลองกดหัวใจดูสิ!</p>
-    </section>
+    </div>
+  </section>
 
-    <footer>ทำด้วยใจ เพื่อคนเลือกอาหารไม่ถูก 🌿</footer>
-  </div>
+  <footer class="band band-forest">
+    <div class="container">
+      <p>ทำด้วยใจ เพื่อคนเลือกอาหารไม่ถูก 🌿</p>
+    </div>
+  </footer>
 
   <div id="detailOverlay" class="detail-overlay" hidden></div>
 
@@ -445,15 +530,18 @@
   function dishCardHTML(dish) {
     var active = favorites.has(dish.id) ? ' active' : '';
     var media = dish.img
-      ? '<img class="photo" src="' + dish.img + '" alt="' + dish.name + '" loading="lazy">'
-      : '<div class="icon">' + dish.icon + '</div>';
+      ? '<img src="' + dish.img + '" alt="' + dish.name + '" loading="lazy">'
+      : '<span class="icon">' + dish.icon + '</span>';
     return (
       '<div class="dish-card" data-card-id="' + dish.id + '">' +
-        '<button class="heart-btn' + active + '" data-toggle-fav="' + dish.id + '" aria-label="กดถูกใจ">♥</button>' +
-        media +
+        '<div class="dish-photo">' +
+          media +
+          '<button class="heart-btn' + active + '" data-toggle-fav="' + dish.id + '" aria-label="กดถูกใจ">♥</button>' +
+        '</div>' +
         '<span class="tag">' + dish.category + '</span>' +
         '<h3>' + dish.name + '</h3>' +
         '<p>' + dish.desc + '</p>' +
+        '<span class="ghost-link">ดูเพิ่มเติม →</span>' +
       '</div>'
     );
   }
@@ -477,18 +565,7 @@
   }
 
   function renderRandomResult(dish) {
-    var active = favorites.has(dish.id) ? ' active' : '';
-    var media = dish.img
-      ? '<img class="photo" src="' + dish.img + '" alt="' + dish.name + '" loading="lazy">'
-      : '<div class="icon">' + dish.icon + '</div>';
-    randomResult.innerHTML =
-      media +
-      '<div class="info">' +
-        '<span class="tag">' + dish.category + '</span>' +
-        '<h3>' + dish.name + '</h3>' +
-        '<p>' + dish.desc + '</p>' +
-      '</div>' +
-      '<button class="heart-btn' + active + '" data-toggle-fav="' + dish.id + '" aria-label="กดถูกใจ">♥</button>';
+    randomResult.innerHTML = dishCardHTML(dish);
     randomResult.hidden = false;
     randomResult.dataset.dishId = dish.id;
   }
@@ -528,15 +605,15 @@
 
   function renderDetailPage(dish) {
     var media = dish.img
-      ? '<img class="photo" src="' + dish.img + '" alt="' + dish.name + '" loading="lazy">'
-      : '<div class="icon">' + dish.icon + '</div>';
+      ? '<img src="' + dish.img + '" alt="' + dish.name + '" loading="lazy">'
+      : '<span class="icon">' + dish.icon + '</span>';
     var ingredientItems = (dish.ingredients || []).map(function (item) {
       return '<li>' + item + '</li>';
     }).join('');
     detailOverlay.innerHTML =
       '<div class="detail-page" role="dialog" aria-modal="true" aria-label="รายละเอียด ' + dish.name + '">' +
         '<button class="detail-close" data-close-detail aria-label="ปิด">✕</button>' +
-        media +
+        '<div class="dish-photo">' + media + '</div>' +
         '<span class="tag">' + dish.category + '</span>' +
         '<h2>' + dish.name + '</h2>' +
         '<p class="desc">' + dish.desc + '</p>' +
@@ -588,11 +665,6 @@
     var card = e.target.closest('[data-card-id]');
     if (card) {
       openDetail(card.getAttribute('data-card-id'));
-      return;
-    }
-    var resultCard = e.target.closest('#randomResult');
-    if (resultCard && resultCard.dataset.dishId) {
-      openDetail(resultCard.dataset.dishId);
     }
   });
 
