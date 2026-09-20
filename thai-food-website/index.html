@@ -103,6 +103,7 @@
     border-radius: 16px;
     padding: 18px 20px;
     animation: pop 0.25s ease;
+    cursor: pointer;
   }
 
   @keyframes pop {
@@ -247,6 +248,88 @@
     .result-card { flex-direction: column; text-align: center; }
     .result-card .heart-btn { margin-left: 0; }
   }
+
+  /* Dish detail overlay (acts as a detail "page") */
+  .dish-card { cursor: pointer; }
+
+  .detail-overlay[hidden] {
+    display: none;
+  }
+
+  .detail-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(59, 42, 26, 0.45);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 16px;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .detail-page {
+    background: var(--card-bg);
+    border-radius: 20px;
+    max-width: 560px;
+    width: 100%;
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 12px 36px rgba(59, 42, 26, 0.25);
+    animation: pop 0.2s ease;
+  }
+
+  .detail-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px;
+  }
+
+  .detail-close:hover { color: var(--thai-red); }
+
+  .detail-page .photo {
+    display: block;
+    width: calc(100% + 48px);
+    height: 220px;
+    object-fit: cover;
+    margin: -24px -24px 16px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .detail-page .icon { font-size: 3rem; margin-bottom: 8px; }
+  .detail-page h2 { margin: 0 0 6px; font-size: 1.4rem; }
+  .detail-page .desc { color: var(--text-muted); margin: 0 0 18px; line-height: 1.6; }
+
+  .detail-page h3 {
+    font-size: 1rem;
+    color: var(--thai-green);
+    margin: 0 0 10px;
+    font-weight: 600;
+  }
+
+  .ingredient-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+  }
+
+  .ingredient-list li {
+    background: #fff;
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
 </style>
 </head>
 <body>
@@ -280,21 +363,35 @@
     <footer>ทำด้วยใจ เพื่อคนเลือกอาหารไม่ถูก 🌿</footer>
   </div>
 
+  <div id="detailOverlay" class="detail-overlay" hidden></div>
+
 <script>
 (function () {
   var dishes = [
-    { id: 1, name: 'ผัดไทย', category: 'ผัด', desc: 'เส้นจันท์ผัดกับกุ้ง เต้าหู้ และถั่วงอก ราดซอสเปรี้ยวหวานเข้มข้น', icon: '🍜' },
-    { id: 2, name: 'ต้มยำกุ้ง', category: 'ต้ม', desc: 'ต้มยำรสจัดจ้าน เปรี้ยวเผ็ดหอมสมุนไพร ใส่กุ้งแม่น้ำตัวโต', icon: '🍲', img: 'tomyum-goong.jpg' },
-    { id: 3, name: 'แกงเขียวหวานไก่', category: 'แกง', desc: 'แกงกะทิเขียวหอมเครื่องแกง รสเผ็ดนัวกลมกล่อม', icon: '🍛' },
-    { id: 4, name: 'ส้มตำ', category: 'ยำ', desc: 'มะละกอสับตำรวมมะเขือเทศและถั่วฝักยาว รสเปรี้ยวเผ็ดเค็มหวาน', icon: '🥗' },
-    { id: 5, name: 'ข้าวเหนียวมะม่วง', category: 'ของหวาน', desc: 'มะม่วงสุกหวานฉ่ำคู่ข้าวเหนียวมูนกะทิหอมมัน', icon: '🥭' },
-    { id: 6, name: 'ผัดกะเพราหมูสับ', category: 'ผัด', desc: 'ผัดเผ็ดใบกะเพราหอมฉุน ราดข้าวสวยร้อนๆ กับไข่ดาว', icon: '🌶️' },
-    { id: 7, name: 'แกงมัสมั่นไก่', category: 'แกง', desc: 'แกงกะทิรสหวานมันเข้มข้น ใส่มันฝรั่งและถั่วลิสง', icon: '🥘' },
-    { id: 8, name: 'ต้มข่าไก่', category: 'ต้ม', desc: 'ซุปกะทิหอมข่าตะไคร้ใบมะกรูด รสเปรี้ยวนวลกำลังดี', icon: '🥣' },
-    { id: 9, name: 'ยำวุ้นเส้น', category: 'ยำ', desc: 'วุ้นเส้นยำรวมกุ้งสับและหมู มะเขือเทศ ขึ้นฉ่าย รสแซ่บจัดจ้าน', icon: '🍤' },
-    { id: 10, name: 'ข้าวผัดปู', category: 'ผัด', desc: 'ข้าวผัดหอมเนยกับเนื้อปูก้อนโต เสิร์ฟพร้อมมะนาว', icon: '🍚' },
-    { id: 11, name: 'ทับทิมกรอบ', category: 'ของหวาน', desc: 'แห้วเชื่อมคลุกแป้งสีแดงกรอบ ราดกะทิสดใส่น้ำแข็ง', icon: '🍧' },
-    { id: 12, name: 'ไก่ทอดหาดใหญ่', category: 'ทอด', desc: 'ไก่ทอดสมุนไพรหอมเครื่องเทศ เสิร์ฟคู่ข้าวเหนียว', icon: '🍗' }
+    { id: 1, name: 'ผัดไทย', category: 'ผัด', desc: 'เส้นจันท์ผัดกับกุ้ง เต้าหู้ และถั่วงอก ราดซอสเปรี้ยวหวานเข้มข้น', icon: '🍜',
+      ingredients: ['เส้นจันท์', 'กุ้งสด', 'เต้าหู้แข็ง', 'ไข่ไก่', 'ถั่วงอก', 'กุ้งแห้ง', 'หัวไชโป๊ว', 'ถั่วลิสงป่น', 'ใบกุยช่าย', 'มะนาว', 'น้ำมะขามเปียก', 'น้ำปลา', 'น้ำตาลปี๊บ'] },
+    { id: 2, name: 'ต้มยำกุ้ง', category: 'ต้ม', desc: 'ต้มยำรสจัดจ้าน เปรี้ยวเผ็ดหอมสมุนไพร ใส่กุ้งแม่น้ำตัวโต', icon: '🍲', img: 'tomyum-goong.jpg',
+      ingredients: ['กุ้งแม่น้ำ', 'ตะไคร้', 'ข่า', 'ใบมะกรูด', 'พริกขี้หนู', 'มะนาว', 'น้ำปลา', 'พริกเผา', 'เห็ดฟาง', 'ผักชี', 'หอมแดง'] },
+    { id: 3, name: 'แกงเขียวหวานไก่', category: 'แกง', desc: 'แกงกะทิเขียวหอมเครื่องแกง รสเผ็ดนัวกลมกล่อม', icon: '🍛',
+      ingredients: ['เนื้อไก่', 'พริกแกงเขียวหวาน', 'กะทิ', 'มะเขือเปราะ', 'มะเขือพวง', 'ใบโหระพา', 'ใบมะกรูด', 'พริกชี้ฟ้า', 'น้ำปลา', 'น้ำตาลปี๊บ'] },
+    { id: 4, name: 'ส้มตำ', category: 'ยำ', desc: 'มะละกอสับตำรวมมะเขือเทศและถั่วฝักยาว รสเปรี้ยวเผ็ดเค็มหวาน', icon: '🥗',
+      ingredients: ['มะละกอดิบสับเส้น', 'มะเขือเทศ', 'ถั่วฝักยาว', 'กระเทียม', 'พริกขี้หนู', 'กุ้งแห้ง', 'ถั่วลิสงคั่ว', 'มะนาว', 'น้ำปลา', 'น้ำตาลปี๊บ'] },
+    { id: 5, name: 'ข้าวเหนียวมะม่วง', category: 'ของหวาน', desc: 'มะม่วงสุกหวานฉ่ำคู่ข้าวเหนียวมูนกะทิหอมมัน', icon: '🥭',
+      ingredients: ['ข้าวเหนียว', 'มะม่วงสุก', 'กะทิ', 'น้ำตาลทราย', 'เกลือ', 'ถั่วเขียวเลาะเปลือกคั่ว'] },
+    { id: 6, name: 'ผัดกะเพราหมูสับ', category: 'ผัด', desc: 'ผัดเผ็ดใบกะเพราหอมฉุน ราดข้าวสวยร้อนๆ กับไข่ดาว', icon: '🌶️',
+      ingredients: ['หมูสับ', 'ใบกะเพรา', 'กระเทียม', 'พริกขี้หนู', 'ไข่ไก่', 'ซอสปรุงรส', 'น้ำมันหอย', 'น้ำตาล', 'พริกไทย'] },
+    { id: 7, name: 'แกงมัสมั่นไก่', category: 'แกง', desc: 'แกงกะทิรสหวานมันเข้มข้น ใส่มันฝรั่งและถั่วลิสง', icon: '🥘',
+      ingredients: ['เนื้อไก่', 'พริกแกงมัสมั่น', 'กะทิ', 'มันฝรั่ง', 'หอมใหญ่', 'ถั่วลิสง', 'ใบกระวาน', 'อบเชย', 'น้ำตาลปี๊บ', 'น้ำมะขามเปียก'] },
+    { id: 8, name: 'ต้มข่าไก่', category: 'ต้ม', desc: 'ซุปกะทิหอมข่าตะไคร้ใบมะกรูด รสเปรี้ยวนวลกำลังดี', icon: '🥣',
+      ingredients: ['เนื้อไก่', 'ข่า', 'ตะไคร้', 'ใบมะกรูด', 'กะทิ', 'เห็ดฟาง', 'พริกขี้หนู', 'น้ำมะนาว', 'น้ำปลา', 'ผักชี'] },
+    { id: 9, name: 'ยำวุ้นเส้น', category: 'ยำ', desc: 'วุ้นเส้นยำรวมกุ้งสับและหมู มะเขือเทศ ขึ้นฉ่าย รสแซ่บจัดจ้าน', icon: '🍤',
+      ingredients: ['วุ้นเส้น', 'กุ้งสับ', 'หมูสับ', 'มะเขือเทศ', 'ขึ้นฉ่าย', 'หอมแดง', 'พริกขี้หนู', 'มะนาว', 'น้ำปลา'] },
+    { id: 10, name: 'ข้าวผัดปู', category: 'ผัด', desc: 'ข้าวผัดหอมเนยกับเนื้อปูก้อนโต เสิร์ฟพร้อมมะนาว', icon: '🍚',
+      ingredients: ['ข้าวสวย', 'เนื้อปู', 'ไข่ไก่', 'หอมใหญ่', 'ต้นหอม', 'ซีอิ๊วขาว', 'เนย', 'พริกไทย', 'มะนาว'] },
+    { id: 11, name: 'ทับทิมกรอบ', category: 'ของหวาน', desc: 'แห้วเชื่อมคลุกแป้งสีแดงกรอบ ราดกะทิสดใส่น้ำแข็ง', icon: '🍧',
+      ingredients: ['แห้ว', 'แป้งมันสำปะหลัง', 'สีผสมอาหารแดง', 'กะทิ', 'น้ำตาลทราย', 'น้ำแข็ง', 'ใบเตย'] },
+    { id: 12, name: 'ไก่ทอดหาดใหญ่', category: 'ทอด', desc: 'ไก่ทอดสมุนไพรหอมเครื่องเทศ เสิร์ฟคู่ข้าวเหนียว', icon: '🍗',
+      ingredients: ['เนื้อไก่', 'ตะไคร้', 'กระเทียม', 'รากผักชี', 'พริกไทย', 'ขมิ้น', 'น้ำปลา', 'แป้งทอดกรอบ'] }
   ];
 
   var categories = ['ผัด', 'ต้ม', 'แกง', 'ยำ', 'ทอด', 'ของหวาน'];
@@ -315,6 +412,7 @@
   var favSection = document.getElementById('favSection');
   var favGrid = document.getElementById('favGrid');
   var favEmpty = document.getElementById('favEmpty');
+  var detailOverlay = document.getElementById('detailOverlay');
 
   function loadFavorites() {
     try {
@@ -428,6 +526,48 @@
     }
   }
 
+  function renderDetailPage(dish) {
+    var media = dish.img
+      ? '<img class="photo" src="' + dish.img + '" alt="' + dish.name + '" loading="lazy">'
+      : '<div class="icon">' + dish.icon + '</div>';
+    var ingredientItems = (dish.ingredients || []).map(function (item) {
+      return '<li>' + item + '</li>';
+    }).join('');
+    detailOverlay.innerHTML =
+      '<div class="detail-page" role="dialog" aria-modal="true" aria-label="รายละเอียด ' + dish.name + '">' +
+        '<button class="detail-close" data-close-detail aria-label="ปิด">✕</button>' +
+        media +
+        '<span class="tag">' + dish.category + '</span>' +
+        '<h2>' + dish.name + '</h2>' +
+        '<p class="desc">' + dish.desc + '</p>' +
+        '<h3>ส่วนประกอบ</h3>' +
+        '<ul class="ingredient-list">' + ingredientItems + '</ul>' +
+      '</div>';
+  }
+
+  function openDetail(id) {
+    var dish = findDish(Number(id));
+    if (!dish) return;
+    renderDetailPage(dish);
+    detailOverlay.hidden = false;
+    if (location.hash !== '#dish-' + dish.id) location.hash = 'dish-' + dish.id;
+  }
+
+  function closeDetail() {
+    detailOverlay.hidden = true;
+    detailOverlay.innerHTML = '';
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  }
+
+  function syncDetailFromHash() {
+    var match = /^#dish-(\d+)$/.exec(location.hash);
+    if (match) {
+      openDetail(match[1]);
+    } else {
+      closeDetail();
+    }
+  }
+
   document.addEventListener('click', function (e) {
     var heartBtn = e.target.closest('[data-toggle-fav]');
     if (heartBtn) {
@@ -439,8 +579,28 @@
       currentFilter = filterBtn.getAttribute('data-filter');
       renderFilterBar();
       renderGrid();
+      return;
+    }
+    if (e.target.closest('[data-close-detail]') || e.target === detailOverlay) {
+      closeDetail();
+      return;
+    }
+    var card = e.target.closest('[data-card-id]');
+    if (card) {
+      openDetail(card.getAttribute('data-card-id'));
+      return;
+    }
+    var resultCard = e.target.closest('#randomResult');
+    if (resultCard && resultCard.dataset.dishId) {
+      openDetail(resultCard.dataset.dishId);
     }
   });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !detailOverlay.hidden) closeDetail();
+  });
+
+  window.addEventListener('hashchange', syncDetailFromHash);
 
   randomBtn.addEventListener('click', function () {
     var dish = dishes[Math.floor(Math.random() * dishes.length)];
@@ -455,6 +615,7 @@
   renderFilterBar();
   renderGrid();
   renderFavorites();
+  syncDetailFromHash();
 })();
 </script>
 </body>
